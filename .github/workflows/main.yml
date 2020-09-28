@@ -7,8 +7,13 @@ name: build openwrt
 on:
   push:
     branches: [ master ]
+    paths:
+      - '.config'
   pull_request:
     branches: [ master ]
+  watch: 
+    type: started
+    
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
@@ -41,13 +46,10 @@ jobs:
         
       - name: Install feed
         run: cd openwrt && sudo ./scripts/feeds install -a
-        
-      - name: pwd
-        run: pwd
           
       # 等待配置menuconfig
       - name: Setup tmate session
-        uses: mxschmitt/action-tmate@v1
+        uses: tangenying/debugger-action@main
     
       # 开始编译
       - name: make          
@@ -57,11 +59,7 @@ jobs:
           echo 编译完成.
       # 打包
       - name: zip
-        run: zip -r openwrt-image.zip ./bib/targets/*
-        
-      # 等待配置menuconfig
-      - name: Setup tmate session
-        uses: mxschmitt/action-tmate@v1  
+        run: zip -r openwrt-image.zip ./bin/targets/* 
         
       # 上传
       - name: upload
