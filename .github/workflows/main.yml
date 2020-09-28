@@ -45,19 +45,7 @@ jobs:
       - name: pwd
         run: pwd
           
-      # 等待配置menuconfig
-      - name: Setup tmate session
-        uses: mxschmitt/action-tmate@v1
-    
-      # 开始编译
-      - name: make          
-        run: |
-          sudo make download -j8
-      #    sudo make V=s FORCE_UNSAFE_CONFIGURE=1
-      #    echo 编译完成.
-      # 打包
-      - name: zip
-        run: zip -r openwrt-image.zip ./bib/targets/*
+     
       # 上传
       - name: upload
         run: |
