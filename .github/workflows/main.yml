@@ -37,10 +37,10 @@ jobs:
           
       # 更新安装feeds
       - name: Update feeds
-        run: cd openwrt && ./scripts/feeds update -a
+        run: cd openwrt && sudo ./scripts/feeds update -a
         
       - name: Install feed
-        run: cd openwrt && ./scripts/feeds install -a
+        run: cd openwrt && sudo ./scripts/feeds install -a
           
       # 等待配置menuconfig
       - name: Setup tmate session
