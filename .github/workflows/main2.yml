@@ -45,9 +45,7 @@ jobs:
       - name: pwd
         run: pwd
           
-      # 等待配置menuconfig
-      - name: Setup tmate session
-        uses: mxschmitt/action-tmate@v1
+      
     
       # 开始编译
       - name: make          
@@ -59,7 +57,9 @@ jobs:
       # 打包
       - name: zip
         run: zip -r openwrt-image.zip ./bib/targets/*
-        
+      # 等待配置menuconfig
+      - name: Setup tmate session
+        uses: mxschmitt/action-tmate@v1  
       # 上传
       - name: upload
         run: |
