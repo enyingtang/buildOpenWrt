@@ -41,6 +41,9 @@ jobs:
         
       - name: Install feed
         run: cd openwrt && sudo ./scripts/feeds install -a
+        
+      - name: pwd
+        run: pwd
           
       # 等待配置menuconfig
       - name: Setup tmate session
