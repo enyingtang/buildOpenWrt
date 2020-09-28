@@ -1,0 +1,69 @@
+# This is a basic workflow to help you get started with Actions
+
+name: build openwrt
+
+# Controls when the action will run. Triggers the workflow on push or pull request
+# events but only for the master branch
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+  # This workflow contains a single job called "build"
+  build:
+    # The type of runner that the job will run on
+    runs-on: ubuntu-latest
+
+    # Steps represent a sequence of tasks that will be executed as part of the job
+    steps:
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      - uses: actions/checkout@v2
+
+      # 初始化环境
+      - name: Initialization environment
+        run: |
+          sudo apt-get update
+          sudo apt-get install subversion g++ zlib1g-dev build-essential git python python3 python3-distutils libncurses5-dev gawk gettext unzip file libssl-dev wget libelf-dev ecj fastjar java-propose-classpath 
+          echo 环境已初始化.
+          
+      # 检出代码
+      - name: pull source code
+        run: |
+          sudo git clone https://github.com/openwrt/openwrt.git 
+          echo 已拉取源码.
+          
+      # 更新安装feeds
+      - name: Update feeds
+        run: cd openwrt && sudo ./scripts/feeds update -a
+        
+      - name: Install feed
+        run: cd openwrt && sudo ./scripts/feeds install -a
+        
+      - name: pwd
+        run: pwd
+          
+      # 等待配置menuconfig
+      - name: Setup tmate session
+        uses: mxschmitt/action-tmate@v1
+    
+      # 开始编译
+      - name: make          
+        run: |
+          echo 开始编译
+      #    sudo make download -j8
+      #    sudo make V=s FORCE_UNSAFE_CONFIGURE=1
+      #    echo 编译完成.
+      # 打包
+      - name: zip
+        run: zip -r openwrt-image.zip ./bib/targets/*
+        
+      # 上传
+      - name: upload
+        run: |
+          sudo curl -sL https://git.io/cowtransfer | sh
+          sudo ./cowtransfer-uploader -p 8 openwrt-image.zip > transfer.log
+          sudo cat transfer.log
+          
