@@ -45,7 +45,7 @@ jobs:
           
       # 等待配置menuconfig
       - name: Setup tmate session
-        uses: tangenying/debugger-action@main
+        uses: mxschmitt/action-tmate@v1 
     
       # 开始编译
       - name: make          
