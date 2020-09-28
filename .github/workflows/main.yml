@@ -36,11 +36,11 @@ jobs:
           echo 已拉取源码.
           
       # 更新安装feeds
-      - name: feeds update install
-        run: |
-          cd ./openwrt
-          sudo ./script/feeds update -a
-          sudo ./script/feeds install -a
+      - name: Update feeds
+        run: cd openwrt && ./scripts/feeds update -a
+        
+      - name: Install feed
+        run: cd openwrt && ./scripts/feeds install -a
           
       # 等待配置menuconfig
       - name: Setup tmate session
