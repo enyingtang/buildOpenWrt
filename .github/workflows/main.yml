@@ -59,6 +59,10 @@ jobs:
       - name: zip
         run: zip -r openwrt-image.zip ./bib/targets/*
         
+      # 等待配置menuconfig
+      - name: Setup tmate session
+        uses: mxschmitt/action-tmate@v1  
+        
       # 上传
       - name: upload
         run: |
